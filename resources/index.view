@@ -1,0 +1,141 @@
+<svg>
+
+<defs>
+  <symbol id="hourMark">
+    <circle cx="0" cy="-150" r="2" fill="white" />
+  </symbol>
+  <symbol id="dayMark">
+    <circle cx="0" cy="-96" r="2" fill="white" />
+  </symbol>
+</defs>
+
+<rect id="background" />
+
+<g transform="translate(168,168)">
+
+<g id="globe">
+  <image id="daylight1" x="-288" y="-48" width="192" height="96" href="" />
+  <image id="daylight2" x="-96" y="-48" width="192" height="96" href="" />
+  <image id="daylight3" x="96" y="-48" width="192" height="96" href="" />
+</g>
+
+<rect x="-168" y="-168" width="20" height="336" fill="black" />
+<rect x="148" y="-168" width="20" height="336" fill="black" />
+
+  <g id="batteryBackground" fill="#00CC00" transform="rotate(45)">
+    <rect x="-200" y="-100" width="80" height="200" />
+  </g>
+  <g id="stepsBackground" fill="#CCAA00" transform="rotate(135)">
+    <rect x="-200" y="-100" width="80" height="200" />
+</g>
+  <g id="distanceBackground" fill="#3366CC" transform="rotate(225)">
+    <rect x="-200" y="-100" width="80" height="200" />
+</g>
+  <g id="zoneBackground" fill="#CC7700" transform="rotate(315)">
+    <rect x="-200" y="-100" width="80" height="200" />
+</g>
+
+<arc x="-132" y="-132" width="264" height="264" fill="#000000"
+    arc-width="18" start-angle="0" sweep-angle="360" />
+
+<arc x="-150" y="-150" width="300" height="300" fill="#000000"
+    arc-width="18" start-angle="0" sweep-angle="360" />
+
+<arc x="-168" y="-168" width="336" height="336" fill="#000000"
+    arc-width="18" start-angle="0" sweep-angle="360" />
+
+<arc x="-114" y="-114" width="228" height="228" fill="#333333"
+    arc-width="18" start-angle="0" sweep-angle="360" />
+
+<arc x="-96" y="-96" width="192" height="192" fill="#333333"
+    arc-width="18" start-angle="0" sweep-angle="360" />
+
+<circle cx="0" cy="-150" r="4" fill="white" />
+<g transform="rotate(30)" ><use href="#hourMark" /></g>
+<g transform="rotate(60)" ><use href="#hourMark" /></g>
+<g transform="rotate(90)" ><use href="#hourMark" /></g>
+<g transform="rotate(120)" ><use href="#hourMark" /></g>
+<g transform="rotate(150)" ><use href="#hourMark" /></g>
+<g transform="rotate(180)" ><use href="#hourMark" /></g>
+<g transform="rotate(210)" ><use href="#hourMark" /></g>
+<g transform="rotate(240)" ><use href="#hourMark" /></g>
+<g transform="rotate(270)" ><use href="#hourMark" /></g>
+<g transform="rotate(300)" ><use href="#hourMark" /></g>
+<g transform="rotate(330)" ><use href="#hourMark" /></g>
+
+<g transform="rotate(0)" ><use href="#dayMark" /></g>
+<g transform="rotate(60)" ><use href="#dayMark" /></g>
+<g transform="rotate(120)" ><use href="#dayMark" /></g>
+<g transform="rotate(180)" ><use href="#dayMark" /></g>
+<g transform="rotate(240)" ><use href="#dayMark" /></g>
+<g transform="rotate(300)" ><use href="#dayMark" /></g>
+
+
+<g id="dateDay" transform="rotate(0)">
+<!-- <arc x="-114" y="-114" width="228" height="228" fill="#AAAAAA"
+  arc-width="18" start-angle="353" sweep-angle="14" /> -->
+<text id="dayText" x="0" y="-98" fill="#AAAAAA"
+  font-family="System-Regular" font-size="20" text-anchor="middle">1</text>
+</g>
+
+<g id="dateMonth" transform="rotate(0)">
+<!-- <arc x="-96" y="-96" width="192" height="192" fill="#AAAAAA"
+    arc-width="18" start-angle="353" sweep-angle="14" /> -->
+<text id="monthText" x="0" y="-80" fill="#AAAAAA"
+  font-family="System-Regular" font-size="20" text-anchor="middle" text-length="3">1</text>
+</g>
+
+<g id="hourHand" class="shadow">
+<circle cx="0" cy="-123" r="20" fill="#CCCCCC" />
+<!-- <arc x="-132" y="-132" width="264" height="264" fill="#EEEEEE"
+    arc-width="18" start-angle="353" sweep-angle="14" /> -->
+<text id="hourText" x="0" y="-116" fill="black"
+  font-family="System-Regular" font-size="20" text-anchor="middle">60</text>
+</g>
+
+<g id="minuteHand" class="shadow">
+<circle cx="0" cy="-141" r="16" fill="#AAAAAA" />
+<!-- <arc x="-150" y="-150" width="300" height="300" fill="#CCCCCC"
+  arc-width="18" start-angle="353" sweep-angle="14" /> -->
+<text id="minuteText" x="0" y="-134" fill="black"
+  font-family="System-Regular" font-size="20" text-anchor="middle">60</text>
+</g>
+
+<g id="secondHand" class="shadow">
+<circle cx="0" cy="-159" r="14" fill="#AA1111" />
+<!-- <arc x="-168" y="-168" width="336" height="336" fill="#CC1111"
+  arc-width="18" start-angle="353" sweep-angle="14" /> -->
+<text id="secondText" x="0" y="-152" fill="white"
+  font-family="System-Regular" font-size="20" text-anchor="middle">60</text>
+</g>
+
+<image x="-138" y="-138" width="20" height="20" href="battery.png" fill="black" />
+<image x="123" y="-138" width="20" height="30" href="footprints.png" fill="black" />
+<image x="123" y="113" width="20" height="30" href="signpost.png" fill="black" />
+<image x="-138" y="118" width="20" height="20" href="dart.png" fill="black" />
+
+
+<!-- <circle cx="-135" cy="0" r="25" fill="#666666" />
+<circle cx="-135" cy="0" r="20" fill="black" />
+<image x="-151" y="-15" width="32" height="32" href="heart_rate_36px.png" fill="red" opacity="0.6" />
+<text id="heartRate" x="-135" y="6" fill="white" text-length="3"
+  font-family="System-Regular" font-size="20" text-anchor="middle">bpm</text-->
+
+  <arc id="sunrise" x="-78" y="-78" width="156" height="156" fill="#4488BB"
+    arc-width="30" start-angle="0" sweep-angle="360" />
+  <arc id="sunset" x="-78" y="-78" width="156" height="156" fill="#115599"
+    arc-width="30" start-angle="0" sweep-angle="360" />
+
+  <g id="weatherRotate">
+  <g transform="translate(0,64)">
+    <g  id="symbolRotate">
+      <image id="weatherImage" x="-20" y="-20" width="40" height="40" href="" />
+    </g>
+    <text id="temperature" x="0" y="-117" fill="black" text-length="4"
+      font-family="System-Regular" font-size="20" text-anchor="middle">--</text>
+  </g>
+</g>
+
+</g>
+
+</svg>
