@@ -184,6 +184,8 @@ weatherTimer();
 function processWeather(weather) {
     var weatherResult = weather;
 
+    console.log(JSON.stringify(weather));
+
     var currentCount;
     if (settings.tempUnit.selected == "1")
         currentCount = Math.round(weather.temperatureF);
@@ -216,6 +218,8 @@ function processWeather(weather) {
     document.getElementById("weatherRotate").groupTransform.rotate.angle = 360 - nowAngle;
     document.getElementById("symbolRotate").groupTransform.rotate.angle = nowAngle;
     temperature.text = currentCount + "°";
+    if(nowHours > 6 && nowHours < 18)
+        document.getElementById("tempRotate").groupTransform.rotate.angle = 180;
 }
 
 // ***** Helpers *****
