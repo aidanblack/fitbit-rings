@@ -52,7 +52,7 @@ function daylightTimer() {
   let minute = now.getUTCMinutes().toString().padStart(2,"0");
 
   let srcImage = encodeURI(`https://www.timeanddate.com/scripts/sunmap.php?earth=1&iso=${year}${month}${day}T${hour}${minute}`);
-  let resizeUri = `https://images.weserv.nl/?url=${srcImage}&w=192&h=96&mod=1.5&con=10&sat=1.5`;
+  let resizeUri = `https://images.weserv.nl/?url=${srcImage}&w=192&h=96&mod=1.7&con=1.25&sat=0.9`;
   let destFilename = `daylight${fileNum}.jpg`;
   fileNum++;
 

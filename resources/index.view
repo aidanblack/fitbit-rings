@@ -134,7 +134,7 @@
     <g transform="translate(0,-133)">
       <g id="tempRotate">
         <text id="temperature" x="0" y="0" fill="#DDDDDD" text-length="4"
-          font-family="System-Regular" font-size="20" text-anchor="middle">--</text>
+          font-family="System-Regular" font-size="20" text-anchor="middle" text-length="3">--</text>
       </g>
     </g>
   </g>
