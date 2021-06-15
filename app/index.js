@@ -89,26 +89,45 @@ messaging.peerSocket.addEventListener("message", (evt) => {
 // ***** Daylight Image *****
 
 function processAllFiles() {
-    var fileName;
-    while (fileName = inbox.nextFile()) {
-        daylightFileName = fileName;
-        console.log(`/private/data/${daylightFileName} is now available`);
-    }
-    daylight1.href = `/private/data/${daylightFileName}`;
-    daylight2.href = `/private/data/${daylightFileName}`;
-    daylight3.href = `/private/data/${daylightFileName}`;
+    if(display.on) {
+        var fileName;
+        while (fileName = inbox.nextFile()) {
+            daylightFileName = fileName;
+            console.log(`/private/data/${daylightFileName} is now available`);
+        }
+        daylight1.href = `/private/data/${daylightFileName}`;
+        daylight2.href = `/private/data/${daylightFileName}`;
+        daylight3.href = `/private/data/${daylightFileName}`;
 
-    try {
-        geolocation.getCurrentPosition(function(position) {
-            var mapOffset = position.coords.longitude / 180 * 96;
-            globe.groupTransform.translate.x = -mapOffset;
-        });
-    }
-    catch(ex) {
-        console.log(ex);
+        try {
+            geolocation.getCurrentPosition(function(position) {
+                var mapOffset = position.coords.longitude / 180 * 96;
+                globe.groupTransform.translate.x = -mapOffset;
+                console.log("Daylight image set");
+            });
+        }
+        catch(ex) {
+            console.log(ex);
+        }
     }
 }
 inbox.addEventListener("newfile", processAllFiles);
+display.addEventListener("change", () => {
+    // Is AOD inactive and the display is on?
+    if (!display.aodActive && display.on) {
+    //   body.start();
+    //   hrm.start();
+      clock.granularity = "seconds";
+      processAllFiles();
+      processWeather();
+      updateStats();
+    }
+    else {
+        // body.stop();
+        // hrm.stop();
+        clock.granularity = "minutes";
+    }
+});
   
 // ***** Clock *****
 
@@ -153,29 +172,33 @@ function updateStats() {
     //     currentGoal = 220;
     // }
 
-    var batteryCount = battery.chargeLevel;
-    var batteryGoal = 100;
-    batteryBackground.style.opacity = Math.min(Math.max((batteryCount / batteryGoal), 0.1), 1);
+    if(display.on) {
+        var batteryCount = battery.chargeLevel;
+        var batteryGoal = 100;
+        batteryBackground.style.opacity = Math.min(Math.max((batteryCount / batteryGoal), 0.1), 1);
 
-    var stepsCount = today.adjusted.steps;
-    var stepsGoal = goals.steps;
-    stepsBackground.style.opacity = Math.min(Math.max((stepsCount / stepsGoal), 0.1), 1);
+        var stepsCount = today.adjusted.steps;
+        var stepsGoal = goals.steps;
+        stepsBackground.style.opacity = Math.min(Math.max((stepsCount / stepsGoal), 0.1), 1);
 
-    var distanceCount = today.adjusted.distance / 16.09344;
-    var distanceGoal = goals.distance / 16.09344;
-    distanceBackground.style.opacity = Math.min(Math.max((distanceCount / distanceGoal), 0.1), 1);
+        var distanceCount = today.adjusted.distance / 16.09344;
+        var distanceGoal = goals.distance / 16.09344;
+        distanceBackground.style.opacity = Math.min(Math.max((distanceCount / distanceGoal), 0.1), 1);
 
-    var zoneCount = today.adjusted.activeZoneMinutes.total;
-    var zoneGoal = goals.activeZoneMinutes.total;
-    zoneBackground.style.opacity = Math.min(Math.max((zoneCount / zoneGoal), 0.1), 1);
+        var zoneCount = today.adjusted.activeZoneMinutes.total;
+        var zoneGoal = goals.activeZoneMinutes.total;
+        zoneBackground.style.opacity = Math.min(Math.max((zoneCount / zoneGoal), 0.1), 1);
+    }
 }
 
 // ***** Weather *****
 
 function weatherTimer() {
-    weather.fetch(30 * 60 * 1000) // return the cached value if it is less than 30 minutes old 
-    .then(weather => processWeather(weather))
-    .catch(error => console.log(JSON.stringify(error.stack)));
+    if(display.on) {
+        weather.fetch(30 * 60 * 1000) // return the cached value if it is less than 30 minutes old 
+        .then(weather => processWeather(weather))
+        .catch(error => console.log(JSON.stringify(error.stack)));
+    }
     setTimeout(weatherTimer, 600000);
 }
 

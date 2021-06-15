@@ -5,17 +5,6 @@ import * as weather from 'fitbit-weather/companion';
 import * as weatherKey from './weather';
 import { outbox } from "file-transfer";
 
-let now = new Date();
-let year = now.getUTCFullYear();
-let month = (now.getUTCMonth() + 1).toString().padStart(2,"0");
-let day = now.getUTCDate().toString().padStart(2,"0");
-let hour = now.getUTCHours().toString().padStart(2,"0");
-let minute = now.getUTCMinutes().toString().padStart(2,"0");
-
-let srcImage = encodeURI(`https://www.timeanddate.com/scripts/sunmap.php?earth=1&iso=${year}${month}${day}T${hour}${minute}`);
-let resizeUri = `https://images.weserv.nl/?url=${srcImage}&w=192&h=96&mod=1.5&con=10&sat=1.5`;
-let destFilename = "daylight.jpg";
-
 /* Api Key can be obtained from openweathermap.com */
 weather.setup({ provider: weather.Providers.openweathermap, apiKey: weatherKey.apiKey });
 
@@ -52,8 +41,22 @@ function sendSettingData(data) {
     }
 }
 
+var fileNum = 0;
+
 function daylightTimer() {
-// Fetch the image from the internet
+  let now = new Date();
+  let year = now.getUTCFullYear();
+  let month = (now.getUTCMonth() + 1).toString().padStart(2,"0");
+  let day = now.getUTCDate().toString().padStart(2,"0");
+  let hour = now.getUTCHours().toString().padStart(2,"0");
+  let minute = now.getUTCMinutes().toString().padStart(2,"0");
+
+  let srcImage = encodeURI(`https://www.timeanddate.com/scripts/sunmap.php?earth=1&iso=${year}${month}${day}T${hour}${minute}`);
+  let resizeUri = `https://images.weserv.nl/?url=${srcImage}&w=192&h=96&mod=1.5&con=10&sat=1.5`;
+  let destFilename = `daylight${fileNum}.jpg`;
+  fileNum++;
+
+  // Fetch the image from the internet
   fetch(resizeUri).then(function (response) {
       return response.arrayBuffer();
     }).then(data => {
