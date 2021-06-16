@@ -137,7 +137,7 @@ clock.ontick = (evt) => {
     let dateText = now.toLocaleString('default', { month: 'short' }).substring(4, 10);
     let monthName = dateText.substring(0,3).toUpperCase();
 
-    dateMonth.groupTransform.rotate.angle = ((360 / 31 / 60 ) * now.getDate()) + ((now.getMonth() + 1) * 30);
+    dateMonth.groupTransform.rotate.angle = ((360 / 31 / 12 ) * now.getDate()) + ((now.getMonth() + 1) * 30);
     monthText.text = monthName;
     if(now.getDate() == 31)
         dateDay.groupTransform.rotate.angle = 6;
