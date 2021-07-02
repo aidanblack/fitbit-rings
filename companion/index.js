@@ -41,9 +41,16 @@ function sendSettingData(data) {
     }
 }
 
+messaging.peerSocket.addEventListener("message", (evt) => {
+  if (evt && evt.data && evt.data.key && evt.data.key == "getDaylightImage") {
+    //console.log(`${evt.data.key} : ${evt.data.value}`); // Good for debugging
+    daylightImage();
+  }
+});
+
 var fileNum = 0;
 
-function daylightTimer() {
+function daylightImage() {
   let now = new Date();
   let year = now.getUTCFullYear();
   let month = (now.getUTCMonth() + 1).toString().padStart(2,"0");
@@ -51,8 +58,8 @@ function daylightTimer() {
   let hour = now.getUTCHours().toString().padStart(2,"0");
   let minute = now.getUTCMinutes().toString().padStart(2,"0");
 
-  let srcImage = encodeURI(`https://www.timeanddate.com/scripts/sunmap.php?earth=1&iso=${year}${month}${day}T${hour}${minute}`);
-  let resizeUri = `https://images.weserv.nl/?url=${srcImage}&w=192&h=96&mod=1.7&con=1.25&sat=0.9`;
+  let srcImage = encodeURI(`https://www.timeanddate.com/scripts/sunmap.php?earth=0&iso=${year}${month}${day}T${hour}${minute}`);
+  let resizeUri = `https://images.weserv.nl/?url=${srcImage}&w=192&h=96`;//&mod=1.7&con=1.25&sat=0.9&hue=-15
   let destFilename = `daylight${fileNum}.jpg`;
   fileNum++;
 
@@ -68,8 +75,4 @@ function daylightTimer() {
     }).catch(err => {
       console.error(`Failure: ${err}`);
     });
-
-    setTimeout(daylightTimer, 3600000);
 }
-
-daylightTimer();

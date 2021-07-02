@@ -21,10 +21,9 @@ export function initialize(callback) {
 
 // Received message containing settings data
 messaging.peerSocket.addEventListener("message", function(evt) {
-  if(evt.data.key == "tempUnit") {
-    settings[evt.data.key] = evt.data.value;
-    onsettingschange(settings);
-  }
+  settings[evt.data.key] = evt.data.value;
+  onsettingschange(settings);
+  //console.log(`[device-settings]: ${settings}`); // Good for debugging
 })
 
 // Register for the unload event
