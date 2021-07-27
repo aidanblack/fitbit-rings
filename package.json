@@ -5,7 +5,8 @@
   "license": "MIT",
   "devDependencies": {
     "@fitbit/sdk": "~5.0.2",
-    "@fitbit/sdk-cli": "^1.7.3"
+    "@fitbit/sdk-cli": "^1.7.3",
+    "fitbit-sdk-types": "^7.0.0"
   },
   "fitbit": {
     "appType": "clockface",

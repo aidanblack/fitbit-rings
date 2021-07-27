@@ -4,6 +4,7 @@ import { me as companion } from "companion";
 import * as weather from 'fitbit-weather/companion';
 import * as weatherKey from './weather';
 import { outbox } from "file-transfer";
+import { zeroPad } from "../common/utils";
 
 /* Api Key can be obtained from openweathermap.com */
 weather.setup({ provider: weather.Providers.openweathermap, apiKey: weatherKey.apiKey });
@@ -53,10 +54,10 @@ var fileNum = 0;
 function daylightImage() {
   let now = new Date();
   let year = now.getUTCFullYear();
-  let month = (now.getUTCMonth() + 1).toString().padStart(2,"0");
-  let day = now.getUTCDate().toString().padStart(2,"0");
-  let hour = now.getUTCHours().toString().padStart(2,"0");
-  let minute = now.getUTCMinutes().toString().padStart(2,"0");
+  let month = zeroPad((now.getUTCMonth() + 1));
+  let day = zeroPad(now.getUTCDate());
+  let hour = zeroPad(now.getUTCHours());
+  let minute = zeroPad(now.getUTCMinutes());
 
   let srcImage = encodeURI(`https://www.timeanddate.com/scripts/sunmap.php?earth=0&iso=${year}${month}${day}T${hour}${minute}`);
   let resizeUri = `https://images.weserv.nl/?url=${srcImage}&w=192&h=96`;//&mod=1.7&con=1.25&sat=0.9&hue=-15

@@ -3,6 +3,12 @@ import document from "document";
 import * as messaging from "messaging";
 
 class Weather {
+    temp;
+    icon;
+    weatherRotate;
+    symbolRotate;
+    tempRotate;
+
     tempUnit = "0";
     timestamp = 0;
     fileRequested = false;
@@ -10,7 +16,7 @@ class Weather {
     weatherGradient = document.getElementById("gradient");
     weatherImage = document.getElementById("weatherImage");
     sunrise = document.getElementById("sunrise");
-    sunset = document.getElementById("sunset");
+    sunset = document.getElementById("sunset") as ArcElement;
     temperature = document.getElementById("temperature");
 
     constructor(temp, icon, weatherRotate, symbolRotate, tempRotate) {
@@ -64,8 +70,10 @@ class Weather {
         this.sunset.sweepAngle = 360 - sunsetAngle + sunriseAngle;
         this.weatherRotate.groupTransform.rotate.angle = 360 - nowAngle;
         this.symbolRotate.groupTransform.rotate.angle = nowAngle;
-        if(nowHours > 6 && nowHours < 18)
+        if(nowHours >= 6 && nowHours < 18)
             this.tempRotate.groupTransform.rotate.angle = 180;
+        else
+            this.tempRotate.groupTransform.rotate.angle = 0;
 
         this.sendSettingData({
             key: "getDaylightImage",

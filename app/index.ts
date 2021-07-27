@@ -17,7 +17,7 @@ import Goals from "./goals";
 // ***** Settings *****
 console.log("set up settings");
 
-const settings;
+var settings;
 
 function settingsCallback(data) {
   settings = data;
@@ -43,10 +43,10 @@ var clockController = new Clock();
 
 // ***** Daylight Image *****
 
-const daylight1 = document.getElementById("daylight1");
-const daylight2 = document.getElementById("daylight2");
-const daylight3 = document.getElementById("daylight3");
-const globe = document.getElementById("globe");
+const daylight1 = document.getElementById("daylight1") as ImageElement;
+const daylight2 = document.getElementById("daylight2") as ImageElement;
+const daylight3 = document.getElementById("daylight3") as ImageElement;
+const globe = document.getElementById("globe") as GroupElement;
 let daylightFileName = "";
 
 function processAllFiles() {

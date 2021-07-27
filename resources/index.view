@@ -182,24 +182,24 @@
       <circle cx="0" cy="-123" r="20" fill="#CCCCCC" />
       <!-- <arc x="-132" y="-132" width="264" height="264" fill="#EEEEEE"
     arc-width="18" start-angle="353" sweep-angle="14" /> -->
-      <text id="hourText" x="0" y="-116" fill="black" font-family="System-Regular" font-size="20"
-        text-anchor="middle">60</text>
+      <g transform="translate(0,-123)"><g id="hourRotate"><text id="hourText" x="0" y="7" fill="black" font-family="System-Regular" font-size="20"
+        text-anchor="middle">60</text></g></g>
     </g>
 
     <g id="minuteHand" class="shadow">
       <circle cx="0" cy="-141" r="16" fill="#AAAAAA" />
       <!-- <arc x="-150" y="-150" width="300" height="300" fill="#CCCCCC"
   arc-width="18" start-angle="353" sweep-angle="14" /> -->
-      <text id="minuteText" x="0" y="-134" fill="black" font-family="System-Regular" font-size="20"
-        text-anchor="middle">60</text>
+      <g transform="translate(0,-141)"><g id="minuteRotate"><text id="minuteText" x="0" y="7" fill="black" font-family="System-Regular" font-size="20"
+        text-anchor="middle">60</text></g></g>
     </g>
 
     <g id="secondHand" class="shadow">
       <circle cx="0" cy="-159" r="14" fill="#AA1111" />
       <!-- <arc x="-168" y="-168" width="336" height="336" fill="#CC1111"
   arc-width="18" start-angle="353" sweep-angle="14" /> -->
-      <text id="secondText" x="0" y="-152" fill="white" font-family="System-Regular" font-size="20"
-        text-anchor="middle">60</text>
+      <g transform="translate(0,-159)"><g id="secondRotate"><text id="secondText" x="0" y="7" fill="white" font-family="System-Regular" font-size="20"
+        text-anchor="middle">60</text></g></g>
     </g>
 
     <image x="-139" y="-139" width="20" height="20" href="battery.png" fill="black" />

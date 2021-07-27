@@ -1,6 +1,7 @@
 import clock from "clock";
 import document from "document";
 import { console } from "fp-ts";
+import { zeroPad } from "../common/utils";
 
 class Clock {
     updateDisplay = function() {};
@@ -8,16 +9,19 @@ class Clock {
     updateGoals = function() {};
     weather;
 
-    hourHand = document.getElementById("hourHand");
-    hourText = document.getElementById("hourText");
-    minuteHand = document.getElementById("minuteHand");
-    minuteText = document.getElementById("minuteText");
-    secondHand = document.getElementById("secondHand");
-    secondText = document.getElementById("secondText");
-    dateDay = document.getElementById("dateDay");
-    dayText = document.getElementById("dayText");
-    dateMonth = document.getElementById("dateMonth");
-    monthText = document.getElementById("monthText");
+    hourHand = document.getElementById("hourHand") as GroupElement;
+    hourText = document.getElementById("hourText") as TextElement;
+    hourRotate = document.getElementById("hourRotate") as GroupElement;
+    minuteHand = document.getElementById("minuteHand") as GroupElement;
+    minuteText = document.getElementById("minuteText") as TextElement;
+    minuteRotate = document.getElementById("minuteRotate") as GroupElement;
+    secondHand = document.getElementById("secondHand") as GroupElement;
+    secondText = document.getElementById("secondText") as TextElement;
+    secondRotate = document.getElementById("secondRotate") as GroupElement;
+    dateDay = document.getElementById("dateDay") as GroupElement;
+    dayText = document.getElementById("dayText") as TextElement;
+    dateMonth = document.getElementById("dateMonth") as GroupElement;
+    monthText = document.getElementById("monthText") as TextElement;
 
     constructor() {
         try {
@@ -36,11 +40,14 @@ class Clock {
         let currentTimestamp = new Date(now).getTime();
 
         this.hourText.text = hours;
-        this.minuteText.text = minutes;
-        this.secondText.text = seconds;
+        this.minuteText.text = zeroPad(minutes);
+        this.secondText.text = zeroPad(seconds);
         this.hourHand.groupTransform.rotate.angle = ((360 / 12) * hours) + ((360 / 12 / 60) * minutes);
         this.minuteHand.groupTransform.rotate.angle = (360 / 60) * minutes + ((360 / 60 / 60) * seconds);
         this.secondHand.groupTransform.rotate.angle = seconds * 6;
+        this.hourRotate.groupTransform.rotate.angle = -(((360 / 12) * hours) + ((360 / 12 / 60) * minutes));
+        this.minuteRotate.groupTransform.rotate.angle = -((360 / 60) * minutes + ((360 / 60 / 60) * seconds));
+        this.secondRotate.groupTransform.rotate.angle = -(seconds * 6);
 
         if((clock.granularity === "minutes"  && (minutes + 5) % 5 === 0) || seconds === 0) this.updateGoals();
         if((clock.granularity === "minutes"  && (minutes + 5) % 5 === 0) || seconds === 0) this.updateBattery();
@@ -83,3 +90,4 @@ class Clock {
 }
 
 export default Clock;
+
