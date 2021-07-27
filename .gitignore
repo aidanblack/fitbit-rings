@@ -1,2 +1,3 @@
 node_modules
 companion/weather.js
+companion/weather.ts
