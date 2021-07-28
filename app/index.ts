@@ -57,19 +57,19 @@ function processAllFiles() {
           console.log(`/private/data/${daylightFileName} is now available`);
       }
       daylight1.href = `/private/data/${daylightFileName}`;
-      daylight2.href = `/private/data/${daylightFileName}`;
-      daylight3.href = `/private/data/${daylightFileName}`;
+      // daylight2.href = `/private/data/${daylightFileName}`;
+      // daylight3.href = `/private/data/${daylightFileName}`;
 
-      try {
-          geolocation.getCurrentPosition(function(position) {
-              var mapOffset = position.coords.longitude / 180 * 96;
-              globe.groupTransform.translate.x = -mapOffset;
-              console.log("Daylight image set");
-          });
-      }
-      catch(ex) {
-          console.log(ex);
-      }
+      // try {
+      //     geolocation.getCurrentPosition(function(position) {
+      //         var mapOffset = position.coords.longitude / 180 * 96;
+      //         globe.groupTransform.translate.x = -mapOffset;
+      //         console.log("Daylight image set");
+      //     });
+      // }
+      // catch(ex) {
+      //     console.log(ex);
+      // }
   }
 }
 inbox.addEventListener("newfile", processAllFiles);

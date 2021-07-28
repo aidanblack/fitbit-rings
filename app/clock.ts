@@ -2,6 +2,7 @@ import clock from "clock";
 import document from "document";
 import { console } from "fp-ts";
 import { zeroPad } from "../common/utils";
+import weather from "./weather";
 
 class Clock {
     updateDisplay = function() {};
@@ -51,12 +52,12 @@ class Clock {
 
         if((clock.granularity === "minutes"  && (minutes + 5) % 5 === 0) || seconds === 0) this.updateGoals();
         if((clock.granularity === "minutes"  && (minutes + 5) % 5 === 0) || seconds === 0) this.updateBattery();
-        if(this.weather.timestamp === 0 || currentTimestamp - this.weather.timestamp > (30 * 60 * 1000)) this.weather.updateWeather();
+        if(this.weather.timestamp === 0 || currentTimestamp - this.weather.timestamp > (30 * 60 * 1000)) {
+            this.weather.fileRequested = false;    
+            this.weather.updateWeather();
+        }
         if(this.weather.fileRequested === false) {
-            this.weather.sendSettingData({
-                key: "getDaylightImage",
-                value: true
-            });
+            this.weather.requestFile();
         }
         console.log(`${this.weather.timestamp} : ${currentTimestamp}`);
 

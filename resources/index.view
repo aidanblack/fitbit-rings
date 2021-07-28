@@ -17,9 +17,9 @@
   <g transform="translate(168,168)">
 
     <g id="globe">
-      <image id="daylight1" x="-288" y="-48" width="192" height="96" href="" />
-      <image id="daylight2" x="-96" y="-48" width="192" height="96" href="" />
-      <image id="daylight3" x="96" y="-48" width="192" height="96" href="" />
+      <image id="daylight1" x="-48" y="-48" width="96" height="96" href="" />
+      <!-- <image id="daylight2" x="-96" y="-48" width="192" height="96" href="" />
+      <image id="daylight3" x="96" y="-48" width="192" height="96" href="" /> -->
     </g>
 
     <rect x="-168" y="-168" width="20" height="336" fill="black" />

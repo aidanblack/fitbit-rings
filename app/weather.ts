@@ -1,6 +1,7 @@
 import * as weather from 'fitbit-weather/app';
 import document from "document";
 import * as messaging from "messaging";
+import { geolocation } from 'geolocation';
 
 class Weather {
     temp;
@@ -29,6 +30,7 @@ class Weather {
 
     processWeather(weather) {
         var weatherResult = weather;
+        console.log(JSON.stringify(weatherResult));
 
         if (this.tempUnit == "1")
             this.temp.text = `${Math.round(weather.temperatureF)}°`;
@@ -49,9 +51,9 @@ class Weather {
     }
 
     processDaylight(weather) {
+        var weatherResult = weather;
         this.fileRequested = false;
 
-        var weatherResult = weather;
         var today = new Date();
         var sunriseTime = new Date(weatherResult.sunrise);
         var sunsetTime = new Date(weatherResult.sunset);
@@ -75,12 +77,31 @@ class Weather {
         else
             this.tempRotate.groupTransform.rotate.angle = 0;
 
-        this.sendSettingData({
-            key: "getDaylightImage",
-            value: true
-        });
-    
+        if(this.fileRequested === false) {
+            this.requestFile();
+        }
+        
         console.log("Daylight Updated");
+    }
+
+    requestFile() {
+        try {
+            geolocation.getCurrentPosition((position) => {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+
+                var data = {
+                    key: "getDaylightImage",
+                    value: `${lat},${lon}`
+                };
+                this.sendSettingData(data);
+
+                console.log("Daylight image set");
+            });
+        }
+        catch(ex) {
+            console.log(ex);
+        }
     }
 
     updateWeather() {
