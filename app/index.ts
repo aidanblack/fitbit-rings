@@ -7,7 +7,7 @@ import { me } from "appbit";
 import * as messaging from "messaging";
 import * as simpleSettings from "./device-settings";
 import { inbox } from "file-transfer"
-import { geolocation } from "geolocation";
+import * as fs from "fs";
 import Clock from "./clock";
 import Battery from "./battery";
 import Weather from "./weather";
@@ -49,27 +49,49 @@ const daylight3 = document.getElementById("daylight3") as ImageElement;
 const globe = document.getElementById("globe") as GroupElement;
 let daylightFileName = "";
 
-function processAllFiles() {
+try {
+  processAllFiles(null);
+}
+catch (ex)
+{
+  console.log(JSON.stringify(ex.message));
+}
+
+function processAllFiles(evt: Event) {
   if(display.on) {
       var fileName;
-      while (fileName = inbox.nextFile()) {
-          daylightFileName = fileName;
-          console.log(`/private/data/${daylightFileName} is now available`);
-      }
-      daylight1.href = `/private/data/${daylightFileName}`;
-      // daylight2.href = `/private/data/${daylightFileName}`;
-      // daylight3.href = `/private/data/${daylightFileName}`;
+      console.log(JSON.stringify(evt));
 
-      // try {
-      //     geolocation.getCurrentPosition(function(position) {
-      //         var mapOffset = position.coords.longitude / 180 * 96;
-      //         globe.groupTransform.translate.x = -mapOffset;
-      //         console.log("Daylight image set");
-      //     });
-      // }
-      // catch(ex) {
-      //     console.log(ex);
-      // }
+      if(evt != null) {
+        while (fileName = inbox.nextFile()) {
+            daylightFileName = fileName;
+            console.log(`/private/data/${daylightFileName} is now available`);
+        }
+      }
+      else {
+        var files = fs.listDirSync("/private/data");
+        var fileIterate = true;
+        do {
+          const file = files.next();
+          if (!file.done) {
+            fileName = new String(file.value);
+            if(fileName.indexOf(".jpg") > 0) daylightFileName = fileName;
+            console.log(`/private/data/${daylightFileName} found`);
+          }
+          else
+          { 
+            fileIterate = false;
+          }
+        } while (fileIterate === true);
+      }
+
+      var fileContent = fs.readFileSync(daylightFileName);
+      if(fileContent.byteLength > 20000) {
+        daylight1.href = `/private/data/${daylightFileName}`;
+        console.log("Daylight image set");
+      }
+
+      console.log(`File size: ${fileContent.byteLength}`);
   }
 }
 inbox.addEventListener("newfile", processAllFiles);

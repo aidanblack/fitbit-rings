@@ -9,6 +9,8 @@ class Weather {
     weatherRotate;
     symbolRotate;
     tempRotate;
+    firstRun;
+    weatherRunning;
 
     tempUnit = "0";
     timestamp = 0;
@@ -26,6 +28,8 @@ class Weather {
         this.weatherRotate = weatherRotate;
         this.symbolRotate = symbolRotate;
         this.tempRotate = tempRotate;
+        this.firstRun = 1;
+        this.weatherRunning = false;
     }
 
     processWeather(weather) {
@@ -51,6 +55,8 @@ class Weather {
     }
 
     processDaylight(weather) {
+        this.firstRun = 30;
+        
         var weatherResult = weather;
         this.fileRequested = false;
 
@@ -77,11 +83,10 @@ class Weather {
         else
             this.tempRotate.groupTransform.rotate.angle = 0;
 
-        if(this.fileRequested === false) {
-            this.requestFile();
-        }
+        this.requestFile();
         
         console.log("Daylight Updated");
+        this.weatherRunning = false;
     }
 
     requestFile() {
@@ -95,19 +100,17 @@ class Weather {
                     value: `${lat},${lon}`
                 };
                 this.sendSettingData(data);
-
-                console.log("Daylight image set");
             });
         }
         catch(ex) {
-            console.log(ex);
+            console.log(ex.message);
         }
     }
 
     updateWeather() {
-        weather.fetch(30 * 60 * 1000) // return the cached value if it is less than 30 minutes old 
+        weather.fetch(this.firstRun * 60 * 1000) // return the cached value if it is less than 30 minutes old 
         .then(weather => this.processWeather(weather))
-        .catch(error => console.log(JSON.stringify(error)));
+        .catch(error => console.log(error.message));
     }
 
     sendSettingData(data) {
@@ -116,6 +119,7 @@ class Weather {
             messaging.peerSocket.send(data);
             this.fileRequested = true;
             //console.log(data); // Good for debugging
+            console.log("Daylight image requested");
         } else {
             console.log("No peerSocket connection");
         }
