@@ -59,6 +59,30 @@ catch (ex)
 
 function processAllFiles(evt: Event) {
   if(display.on) {
+      var files = fs.listDirSync("/private/data");
+      var fileIterate = true;
+      var previousFile;
+      do {
+        const file = files.next();
+        if (!file.done) {
+          try {
+            fs.unlinkSync(previousFile);
+            console.log(`${previousFile} deleted`);
+          }
+          catch (ex) { console.log(ex.message); }
+
+          previousFile = daylightFileName;
+
+          fileName = new String(file.value);
+          if(fileName.indexOf(".jpg") > 0 || fileName.indexOf(".png") > 0) daylightFileName = fileName;
+          console.log(`/private/data/${daylightFileName} found`);
+        }
+        else
+        { 
+          fileIterate = false;
+        }
+      } while (fileIterate === true);
+
       var fileName;
       console.log(JSON.stringify(evt));
 
@@ -67,22 +91,6 @@ function processAllFiles(evt: Event) {
             daylightFileName = fileName;
             console.log(`/private/data/${daylightFileName} is now available`);
         }
-      }
-      else {
-        var files = fs.listDirSync("/private/data");
-        var fileIterate = true;
-        do {
-          const file = files.next();
-          if (!file.done) {
-            fileName = new String(file.value);
-            if(fileName.indexOf(".jpg") > 0) daylightFileName = fileName;
-            console.log(`/private/data/${daylightFileName} found`);
-          }
-          else
-          { 
-            fileIterate = false;
-          }
-        } while (fileIterate === true);
       }
 
       var fileContent = fs.readFileSync(daylightFileName);

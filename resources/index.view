@@ -16,23 +16,7 @@
 
   <g transform="translate(168,168)">
 
-    <g id="globe">
-      <image id="daylight1" x="-48" y="-48" width="96" height="96" href="" />
-      <!-- <image id="daylight2" x="-96" y="-48" width="192" height="96" href="" />
-      <image id="daylight3" x="96" y="-48" width="192" height="96" href="" /> -->
-    </g>
-
-    <rect x="-168" y="-168" width="20" height="336" fill="black" />
-    <rect x="148" y="-168" width="20" height="336" fill="black" />
-
-    <arc x="-132" y="-132" width="264" height="264" fill="#000000" arc-width="18" start-angle="0" sweep-angle="360" />
-
-    <arc x="-150" y="-150" width="300" height="300" fill="#000000" arc-width="18" start-angle="0" sweep-angle="360" />
-
-    <arc x="-168" y="-168" width="336" height="336" fill="#000000" arc-width="18" start-angle="0" sweep-angle="360" />
-
     <g id="batteryBackground" fill="#00CC00" transform="rotate(348)">
-      <!--rect x="-200" y="-100" width="80" height="200" /-->
       <g transform="rotate(0)">
         <use id="batt1" href="#statsMark" />
       </g>
@@ -105,9 +89,7 @@
       <arc id="zoneArc" x="-170" y="-170" width="340" height="340" arc-width="3" start-angle="315" sweep-angle="24" />
     </g>
 
-    <arc x="-114" y="-114" width="228" height="228" fill="#333333" arc-width="18" start-angle="0" sweep-angle="360" />
-
-    <arc x="-96" y="-96" width="192" height="192" fill="#333333" arc-width="18" start-angle="0" sweep-angle="360" />
+    <circle cx="0" cy="0" r="114" fill="#333333" />
 
     <circle cx="0" cy="-141" r="4" fill="white" />
     <g transform="rotate(30)">
@@ -165,39 +147,29 @@
 
 
     <g id="dateDay" transform="rotate(0)">
-      <!-- <arc x="-114" y="-114" width="228" height="228" fill="#AAAAAA"
-  arc-width="18" start-angle="353" sweep-angle="14" /> -->
       <text id="dayText" x="0" y="-98" fill="#CCCCCC" font-family="System-Regular" font-size="20" text-anchor="middle"
         text-length="3">1</text>
     </g>
 
     <g id="dateMonth" transform="rotate(0)">
-      <!-- <arc x="-96" y="-96" width="192" height="192" fill="#AAAAAA"
-    arc-width="18" start-angle="353" sweep-angle="14" /> -->
       <text id="monthText" x="0" y="-80" fill="#CCCCCC" font-family="System-Regular" font-size="20" text-anchor="middle"
         text-length="3">1</text>
     </g>
 
     <g id="hourHand" class="shadow">
       <circle cx="0" cy="-123" r="20" fill="#CCCCCC" />
-      <!-- <arc x="-132" y="-132" width="264" height="264" fill="#EEEEEE"
-    arc-width="18" start-angle="353" sweep-angle="14" /> -->
       <g transform="translate(0,-123)"><g id="hourRotate"><text id="hourText" x="0" y="7" fill="black" font-family="System-Regular" font-size="20"
         text-anchor="middle">60</text></g></g>
     </g>
 
     <g id="minuteHand" class="shadow">
       <circle cx="0" cy="-141" r="16" fill="#AAAAAA" />
-      <!-- <arc x="-150" y="-150" width="300" height="300" fill="#CCCCCC"
-  arc-width="18" start-angle="353" sweep-angle="14" /> -->
       <g transform="translate(0,-141)"><g id="minuteRotate"><text id="minuteText" x="0" y="7" fill="black" font-family="System-Regular" font-size="20"
         text-anchor="middle">60</text></g></g>
     </g>
 
     <g id="secondHand" class="shadow">
       <circle cx="0" cy="-159" r="14" fill="#AA1111" />
-      <!-- <arc x="-168" y="-168" width="336" height="336" fill="#CC1111"
-  arc-width="18" start-angle="353" sweep-angle="14" /> -->
       <g transform="translate(0,-159)"><g id="secondRotate"><text id="secondText" x="0" y="7" fill="white" font-family="System-Regular" font-size="20"
         text-anchor="middle">60</text></g></g>
     </g>
@@ -214,8 +186,7 @@
 <text id="heartRate" x="-135" y="6" fill="white" text-length="3"
   font-family="System-Regular" font-size="20" text-anchor="middle">bpm</text-->
 
-    <arc id="sunrise" x="-78" y="-78" width="156" height="156" fill="#4488BB" arc-width="30" start-angle="0"
-      sweep-angle="360" />
+    <circle cx="0" cy="0%" r="78" fill="#4488BB" />
     <arc id="sunset" x="-78" y="-78" width="156" height="156" fill="#115599" arc-width="30" start-angle="0"
       sweep-angle="360" />
 
@@ -231,6 +202,10 @@
           </g>
         </g>
       </g>
+    </g>
+
+    <g id="globe">
+      <image id="daylight1" x="-48" y="-48" width="96" height="96" href="" />
     </g>
 
   </g>

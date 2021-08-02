@@ -58,7 +58,6 @@ class Weather {
         this.firstRun = 30;
         
         var weatherResult = weather;
-        this.fileRequested = false;
 
         var today = new Date();
         var sunriseTime = new Date(weatherResult.sunrise);
@@ -83,8 +82,6 @@ class Weather {
         else
             this.tempRotate.groupTransform.rotate.angle = 0;
 
-        this.requestFile();
-        
         console.log("Daylight Updated");
         this.weatherRunning = false;
     }

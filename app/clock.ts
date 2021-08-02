@@ -50,12 +50,16 @@ class Clock {
         this.minuteRotate.groupTransform.rotate.angle = -((360 / 60) * minutes + ((360 / 60 / 60) * seconds));
         this.secondRotate.groupTransform.rotate.angle = -(seconds * 6);
 
+        if(hours == 0) this.weather.fileRequested = false;
         if((this.weather.timestamp === 0 || currentTimestamp - this.weather.timestamp > (30 * 60 * 1000)) && !this.weather.weatherRunning) {
             this.weather.weatherRunning = true;
-            this.weather.fileRequested = false;
             this.weather.updateWeather();
+            if(this.weather.fileRequested === false) {
+                this.weather.requestFile();
+            }
         }
         console.log(`${this.weather.timestamp} : ${currentTimestamp}`);
+
         if((clock.granularity === "minutes"  && (minutes + 5) % 5 === 0) || seconds === 0) {
             this.updateGoals();
             this.updateBattery();
