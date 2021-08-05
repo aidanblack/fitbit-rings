@@ -1,9 +1,5 @@
 import * as weather from 'fitbit-weather/app';
 import document from "document";
-import * as messaging from "messaging";
-import { geolocation } from 'geolocation';
-import File from "./file";
-import { error } from 'fp-ts/lib/Console';
 
 class Weather {
     temp;
@@ -12,19 +8,16 @@ class Weather {
     symbolRotate;
     tempRotate;
     firstRun;
-    weatherRunning;
 
     tempUnit = "0";
     timestamp = 0;
-    fileRequested = false;
+    weatherRunning = false;
 
     weatherGradient = document.getElementById("gradient");
     weatherImage = document.getElementById("weatherImage");
     sunrise = document.getElementById("sunrise");
     sunset = document.getElementById("sunset") as ArcElement;
     temperature = document.getElementById("temperature");
-
-    file = new File();
 
     constructor(temp, icon, weatherRotate, symbolRotate, tempRotate) {
         this.temp = temp;
@@ -33,12 +26,10 @@ class Weather {
         this.symbolRotate = symbolRotate;
         this.tempRotate = tempRotate;
         this.firstRun = 1;
-        this.weatherRunning = false;
     }
 
     processWeather(weather) {
         var weatherResult = weather;
-        console.log(JSON.stringify(weatherResult));
 
         if (this.tempUnit == "1")
             this.temp.text = `${Math.round(weather.temperatureF)}°`;
@@ -54,7 +45,6 @@ class Weather {
         this.timestamp = weather.timestamp;
 
         console.log("Weather Updated");
-
         this.processDaylight(weather);
     }
 
@@ -89,33 +79,6 @@ class Weather {
 
         console.log("Daylight Updated");
         this.weatherRunning = false;
-        console.log(this.weatherRunning);
-        console.log(this.fileRequested);
-    }
-
-    requestFile() {
-        try {
-            geolocation.getCurrentPosition((position) => {
-                var lat = position.coords.latitude;
-                var lon = position.coords.longitude;
-
-                var data = {
-                    key: "getDaylightImage",
-                    value: `${lat},${lon}`
-                };
-                const daylight1 = document.getElementById("daylight1") as ImageElement;
-
-                this.file.fetch(this.firstRun * 60 * 1000, data)
-                .then(file => this.file.getInboxFile())
-                .then(filename => daylight1.href = `/private/data/${filename}`)
-                .then(() => {this.fileRequested = true;})
-                .catch(error => console.log(error.message));
-                console.log(JSON.stringify(data));
-            });
-        }
-        catch(ex) {
-            console.log(ex.message);
-        }
     }
 
     updateWeather() {

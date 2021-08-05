@@ -5,6 +5,7 @@ import * as weather from "fitbit-weather/companion";
 import * as weatherKey from "./weather";
 import { outbox } from "file-transfer";
 import { zeroPad } from "../common/utils"
+import { geolocation } from "geolocation"
 
 console.log("Launch Companion");
 
@@ -52,10 +53,12 @@ function sendSettingData(data) {
 messaging.peerSocket.addEventListener("message", (evt) => {
   if (evt && evt.data && evt.data.key && evt.data.key == "getDaylightImage") {
     //console.log(`${evt.data.key} : ${evt.data.value}`); // Good for debugging
-    var coords = new String(evt.data.value).split(",");
-    var lat = coords[0];
-    var lon = coords[1];
-    daylightImage(lat, lon);
+    geolocation.getCurrentPosition(
+      (position) => {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+      daylightImage(lat, lon);
+    });
   }
 });
 

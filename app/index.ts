@@ -1,17 +1,14 @@
 import clock from "clock";
 import document from "document";
 import { display } from "display";
-import { HeartRateSensor } from "heart-rate";
-import { BodyPresenceSensor } from "body-presence";
 import { me } from "appbit";
 import * as messaging from "messaging";
 import * as simpleSettings from "./device-settings";
-import { inbox } from "file-transfer"
 import Clock from "./clock";
 import Battery from "./battery";
 import Weather from "./weather";
-//import Face from "./face";
 import Goals from "./goals";
+import File from "./file";
 
 // ***** Settings *****
 console.log("set up settings");
@@ -40,50 +37,8 @@ console.log("set up clock");
 
 var clockController = new Clock();
 
-// ***** Daylight Image *****
-
-// const daylight1 = document.getElementById("daylight1") as ImageElement;
-// const daylight2 = document.getElementById("daylight2") as ImageElement;
-// const daylight3 = document.getElementById("daylight3") as ImageElement;
-// const globe = document.getElementById("globe") as GroupElement;
-// let daylightFileName = "";
-
-// try {
-//   processAllFiles(null);
-// }
-// catch (ex)
-// {
-//   console.log(JSON.stringify(ex.message));
-// }
-
-// function processAllFiles(evt: Event) {
-//   if(display.on) {
-
-//       var fileName;
-//       console.log(JSON.stringify(evt));
-
-//       if(evt != null) {
-//         while (fileName = inbox.nextFile()) {
-//             daylightFileName = fileName;
-//             console.log(`/private/data/${daylightFileName} is now available`);
-//         }
-//       }
-
-//       var fileContent = fs.readFileSync(daylightFileName);
-//       if(fileContent.byteLength > 20000) {
-//         daylight1.href = `/private/data/${daylightFileName}`;
-//         console.log("Daylight image set");
-//       }
-
-//       console.log(`File size: ${fileContent.byteLength}`);
-//   }
-// }
-// inbox.addEventListener("newfile", processAllFiles);
-
 // ***** Display *****
 console.log("set up display");
-
-//var face = new Face(settings, body, hrm, dateBox);
 
 if (display.aodAvailable && me.permissions.granted("access_aod")) {
   // tell the system we support AOD
@@ -99,7 +54,6 @@ if (display.aodAvailable && me.permissions.granted("access_aod")) {
     else {
       clock.granularity = "minutes";
     }
-    //face.updateDisplay();
   });
 }
 else {
@@ -113,11 +67,10 @@ else {
     else {
       clock.granularity = "minutes";
     }
-    //face.updateDisplay();
   });
 }
 
-//clockController.updateDisplay = () => { face.updateDisplay() };
+clockController.file = new File();
 
 // ***** Weather *****
 console.log("set up weather");
@@ -157,3 +110,6 @@ console.log("start updates");
 clockController.updateGoals();
 clockController.updateBattery();
 clockController.startClock();
+clockController.file.getLatestFile();
+var daylight1 = document.getElementById("daylight1") as ImageElement;
+daylight1.href = clockController.file.fileName;
