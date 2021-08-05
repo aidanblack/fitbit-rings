@@ -2,6 +2,8 @@ import * as weather from 'fitbit-weather/app';
 import document from "document";
 import * as messaging from "messaging";
 import { geolocation } from 'geolocation';
+import File from "./file";
+import { error } from 'fp-ts/lib/Console';
 
 class Weather {
     temp;
@@ -21,6 +23,8 @@ class Weather {
     sunrise = document.getElementById("sunrise");
     sunset = document.getElementById("sunset") as ArcElement;
     temperature = document.getElementById("temperature");
+
+    file = new File();
 
     constructor(temp, icon, weatherRotate, symbolRotate, tempRotate) {
         this.temp = temp;
@@ -55,6 +59,7 @@ class Weather {
     }
 
     processDaylight(weather) {
+        console.log("Process Daylight");
         this.firstRun = 30;
         
         var weatherResult = weather;
@@ -84,6 +89,8 @@ class Weather {
 
         console.log("Daylight Updated");
         this.weatherRunning = false;
+        console.log(this.weatherRunning);
+        console.log(this.fileRequested);
     }
 
     requestFile() {
@@ -96,7 +103,14 @@ class Weather {
                     key: "getDaylightImage",
                     value: `${lat},${lon}`
                 };
-                this.sendSettingData(data);
+                const daylight1 = document.getElementById("daylight1") as ImageElement;
+
+                this.file.fetch(this.firstRun * 60 * 1000, data)
+                .then(file => this.file.getInboxFile())
+                .then(filename => daylight1.href = `/private/data/${filename}`)
+                .then(() => {this.fileRequested = true;})
+                .catch(error => console.log(error.message));
+                console.log(JSON.stringify(data));
             });
         }
         catch(ex) {
@@ -108,18 +122,6 @@ class Weather {
         weather.fetch(this.firstRun * 60 * 1000) // return the cached value if it is less than 30 minutes old 
         .then(weather => this.processWeather(weather))
         .catch(error => console.log(error.message));
-    }
-
-    sendSettingData(data) {
-        // If we have a MessageSocket, send the data to the device
-        if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-            messaging.peerSocket.send(data);
-            this.fileRequested = true;
-            //console.log(data); // Good for debugging
-            console.log("Daylight image requested");
-        } else {
-            console.log("No peerSocket connection");
-        }
     }
 }
   

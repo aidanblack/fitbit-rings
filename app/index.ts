@@ -7,7 +7,6 @@ import { me } from "appbit";
 import * as messaging from "messaging";
 import * as simpleSettings from "./device-settings";
 import { inbox } from "file-transfer"
-import * as fs from "fs";
 import Clock from "./clock";
 import Battery from "./battery";
 import Weather from "./weather";
@@ -43,66 +42,43 @@ var clockController = new Clock();
 
 // ***** Daylight Image *****
 
-const daylight1 = document.getElementById("daylight1") as ImageElement;
-const daylight2 = document.getElementById("daylight2") as ImageElement;
-const daylight3 = document.getElementById("daylight3") as ImageElement;
-const globe = document.getElementById("globe") as GroupElement;
-let daylightFileName = "";
+// const daylight1 = document.getElementById("daylight1") as ImageElement;
+// const daylight2 = document.getElementById("daylight2") as ImageElement;
+// const daylight3 = document.getElementById("daylight3") as ImageElement;
+// const globe = document.getElementById("globe") as GroupElement;
+// let daylightFileName = "";
 
-try {
-  processAllFiles(null);
-}
-catch (ex)
-{
-  console.log(JSON.stringify(ex.message));
-}
+// try {
+//   processAllFiles(null);
+// }
+// catch (ex)
+// {
+//   console.log(JSON.stringify(ex.message));
+// }
 
-function processAllFiles(evt: Event) {
-  if(display.on) {
-      var files = fs.listDirSync("/private/data");
-      var fileIterate = true;
-      var previousFile;
-      do {
-        const file = files.next();
-        if (!file.done) {
-          try {
-            fs.unlinkSync(previousFile);
-            console.log(`${previousFile} deleted`);
-          }
-          catch (ex) { console.log(ex.message); }
+// function processAllFiles(evt: Event) {
+//   if(display.on) {
 
-          previousFile = daylightFileName;
+//       var fileName;
+//       console.log(JSON.stringify(evt));
 
-          fileName = new String(file.value);
-          if(fileName.indexOf(".jpg") > 0 || fileName.indexOf(".png") > 0) daylightFileName = fileName;
-          console.log(`/private/data/${daylightFileName} found`);
-        }
-        else
-        { 
-          fileIterate = false;
-        }
-      } while (fileIterate === true);
+//       if(evt != null) {
+//         while (fileName = inbox.nextFile()) {
+//             daylightFileName = fileName;
+//             console.log(`/private/data/${daylightFileName} is now available`);
+//         }
+//       }
 
-      var fileName;
-      console.log(JSON.stringify(evt));
+//       var fileContent = fs.readFileSync(daylightFileName);
+//       if(fileContent.byteLength > 20000) {
+//         daylight1.href = `/private/data/${daylightFileName}`;
+//         console.log("Daylight image set");
+//       }
 
-      if(evt != null) {
-        while (fileName = inbox.nextFile()) {
-            daylightFileName = fileName;
-            console.log(`/private/data/${daylightFileName} is now available`);
-        }
-      }
-
-      var fileContent = fs.readFileSync(daylightFileName);
-      if(fileContent.byteLength > 20000) {
-        daylight1.href = `/private/data/${daylightFileName}`;
-        console.log("Daylight image set");
-      }
-
-      console.log(`File size: ${fileContent.byteLength}`);
-  }
-}
-inbox.addEventListener("newfile", processAllFiles);
+//       console.log(`File size: ${fileContent.byteLength}`);
+//   }
+// }
+// inbox.addEventListener("newfile", processAllFiles);
 
 // ***** Display *****
 console.log("set up display");
@@ -152,13 +128,14 @@ var weather = new Weather(
   document.getElementById("weatherRotate"),
   document.getElementById("symbolRotate"),
   document.getElementById("tempRotate"));
-try {
-  weather.tempUnit = settings.tempUnit.selected;
-}
-catch {
-  weather.tempUnit = "0";
-}
-clockController.weather = weather;
+  try {
+    weather.tempUnit = settings.tempUnit.selected || "Celsius";
+  }
+  catch (err) {
+    console.log(err);
+    weather.tempUnit = "Celsius";
+  }
+  clockController.weather = weather;
 
 // ***** Goals *****
 console.log("set up goals");

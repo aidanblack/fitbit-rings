@@ -10,6 +10,19 @@
     <symbol id="statsMark">
       <circle cx="-119" cy="-119" r="3" />
     </symbol>
+    <symbol id="secondAnimate">
+      <g>
+        <circle cx="0" cy="-159" r="14" fill="#AA1111" />
+        <g transform="translate(0,-159)">
+          <g id="secondRotate">
+            <text id="secondText" x="0" y="7" fill="white" font-family="System-Regular" font-size="20"
+              text-anchor="middle">60</text>
+          </g>
+        </g>
+        <animateTransform attributeType="rotate" begin="0s" from="0" to="6" dur="1s" begin="enable" final="restore" />
+      </g>
+    </symbol>
+
   </defs>
 
   <rect id="background" />
@@ -169,9 +182,7 @@
     </g>
 
     <g id="secondHand" class="shadow">
-      <circle cx="0" cy="-159" r="14" fill="#AA1111" />
-      <g transform="translate(0,-159)"><g id="secondRotate"><text id="secondText" x="0" y="7" fill="white" font-family="System-Regular" font-size="20"
-        text-anchor="middle">60</text></g></g>
+      <use href="#secondAnimate" id="smoothSecond" />
     </g>
 
     <image x="-139" y="-139" width="20" height="20" href="battery.png" fill="black" />
@@ -186,7 +197,12 @@
 <text id="heartRate" x="-135" y="6" fill="white" text-length="3"
   font-family="System-Regular" font-size="20" text-anchor="middle">bpm</text-->
 
-    <circle cx="0" cy="0%" r="78" fill="#4488BB" />
+    <g id="globe">
+      <image id="daylight1" x="-48" y="-48" width="96" height="96" href="" />
+    </g>
+
+    <arc id="sunrise" x="-78" y="-78" width="156" height="156" fill="#4488BB" arc-width="30" start-angle="0"
+      sweep-angle="360" />
     <arc id="sunset" x="-78" y="-78" width="156" height="156" fill="#115599" arc-width="30" start-angle="0"
       sweep-angle="360" />
 
@@ -202,10 +218,6 @@
           </g>
         </g>
       </g>
-    </g>
-
-    <g id="globe">
-      <image id="daylight1" x="-48" y="-48" width="96" height="96" href="" />
     </g>
 
   </g>
