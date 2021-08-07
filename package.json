@@ -29,6 +29,7 @@
     "appUUID": "6b8a5f00-5c8f-45dd-96f6-b58db89a40de"
   },
   "dependencies": {
+    "@fitbit/image-codec-txi": "^1.1.5",
     "child-process": "^1.0.2",
     "emitter": "0.0.5",
     "fitbit": "0.0.7",

@@ -50,6 +50,7 @@ if (display.aodAvailable && me.permissions.granted("access_aod")) {
     if (!display.aodActive && display.on) {
       clock.granularity = "seconds";
       clockController.weather.updateWeather();
+      clockController.file.requestFile();
     }
     else {
       clock.granularity = "minutes";
@@ -63,6 +64,7 @@ else {
     if (display.on) {
       clock.granularity = "seconds";
       clockController.weather.updateWeather();
+      clockController.file.requestFile();
     }
     else {
       clock.granularity = "minutes";
@@ -110,6 +112,6 @@ console.log("start updates");
 clockController.updateGoals();
 clockController.updateBattery();
 clockController.startClock();
-clockController.file.getLatestFile();
+clockController.file.requestFile();
 var daylight1 = document.getElementById("daylight1") as ImageElement;
 daylight1.href = clockController.file.fileName;

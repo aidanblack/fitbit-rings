@@ -16,17 +16,14 @@ class File {
                 else {
                     this.fileName = `/private/data/${destFilename}`;
                     this.timestamp = Date.now();
-                    if(data == "outbox")  {
-                        this.getInboxFile();
-                    }
-                    else {
+                    if(data != "outbox")  {
                         this.file = data;
                         this.writeFile();
                     }
-                    promise.resolve(this.file);
+                    promise.resolve(this.fileName);
                     console.log(`${this.fileName} is now available`);
                 }
-                delete this.promises[destFilename];
+                delete this.promises[this.now];
             }
         });
           
@@ -45,7 +42,10 @@ class File {
         inbox.addEventListener("newfile", (evt: Event) => {
             console.log(JSON.stringify(evt));
             this.getInboxFile();
-            this.daylight1.href = this.fileName;
+            if(this.daylight1.href != this.fileName) {
+                this.daylight1.href = this.fileName;
+                console.log(`Image set to ${this.fileName}`);
+            }
         });
 
     }
@@ -68,12 +68,12 @@ class File {
         try {
             var inboxFileName;
             while (newFileName = inbox.nextFile()) {
-                console.log(`/private/data/${newFileName} found in Inbox`);
+                console.log(`Inbox: /private/data/${newFileName} found`);
                 inboxFileName = newFileName;
             }
             this.fileName = `/private/data/${inboxFileName}`;
-            this.file = this.readFile()
-            console.log(`Image set to ${this.fileName}`);
+            this.readFile()
+            console.log(`${this.fileName} received`);
         }
         catch(ex) {
             console.error(ex.message);
@@ -100,14 +100,18 @@ class File {
                 currentFileName = oldFile.value;
                 this.fileName = `/private/data/${currentFileName}`;
             }
-            console.log(`${this.fileName} found`);
+            console.log(`Folder: ${this.fileName} found`);
         }
         this.readFile();
+        files = null;
     }
 
     readFile = () => {
         try {
-            this.file = fs.readFileSync(this.fileName);
+            var fileContent = fs.readFileSync(this.fileName);
+            if(fileContent.byteLength < 1000) this.file = fileContent;
+            console.log(fileContent.byteLength);
+            fileContent = null;
         } catch (n) {
             this.file = { now : 0 };
         }
@@ -129,19 +133,20 @@ class File {
     }
 
 
-    fetch = (maximumAge = 0, location) => {
+    fetch = (maximumAge = 0, data) => {
         if (this.file === undefined) {
             this.readFile();
         }
 
         return new Promise((resolve, reject) => {
             this.now = Date.now()
-            if (this.file && (this.now - this.timestamp < maximumAge)) {
-                resolve(this.file);
+            if (this.fileName && (this.now - this.timestamp < maximumAge)) {
+                this.getLatestFile();
+                resolve(this.fileName);
             }
             else {
                 this.promises[this.now] = { resolve, reject };
-                this.sendRequest(location);
+                this.sendRequest(data);
             }
         })
     }
@@ -156,24 +161,24 @@ class File {
     requestFile() {
         try {
             console.log("Request file");
-            var lat;
-            var lon;
+            this.fileRequested = true;
 
             var data = {
                 key: "getDaylightImage",
-                value: ""
+                value: this.fileRequested
             };
-            this.fileRequested = true;
             console.log(JSON.stringify(data));
 
             this.getLatestFile();
 
             this.fetch(this.firstRun * 60 * 1000, data)
             .then(() => this.firstRun = 60)
-            .catch(error => console.log(error.message));
+            .catch(error => console.log(error));
 
-            this.daylight1.href = this.fileName;
-            console.log(`Image set to ${this.fileName}`);
+            if(this.daylight1.href != this.fileName) {
+                this.daylight1.href = this.fileName;
+                console.log(`Image set to ${this.fileName}`);
+            }
         }
         catch(ex) {
             console.log(ex.message);
