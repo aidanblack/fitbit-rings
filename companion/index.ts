@@ -26,7 +26,6 @@ if (companion.launchReasons.settingsChanged) {
     sendValue("hideWeather", JSON.parse(settingsStorage.getItem("hideWeather")));
     sendValue("hideHeartRate", JSON.parse(settingsStorage.getItem("hideHeartRate")));
     sendValue("hideGoals", JSON.parse(settingsStorage.getItem("hideGoals")));
-    sendValue("daylightImage", JSON.parse(settingsStorage.getItem("daylightImage")));
 }
 
 messaging.peerSocket.addEventListener("error", (err) => {
@@ -45,7 +44,7 @@ function sendSettingData(data) {
     // If we have a MessageSocket, send the data to the device
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
         messaging.peerSocket.send(data);
-        //console.log(data); // Good for debugging
+        console.log(data); // Good for debugging
     } else {
         console.log("No peerSocket connection");
     }

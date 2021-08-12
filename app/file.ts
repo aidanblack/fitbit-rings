@@ -14,14 +14,14 @@ class File {
                     promise.reject(error);
                 }
                 else {
-                    this.fileName = `/private/data/${destFilename}`;
+                    this.getInboxFile(destFilename);
                     this.timestamp = Date.now();
                     if(data != "outbox")  {
                         this.file = data;
                         this.writeFile();
                     }
-                    promise.resolve(this.fileName);
-                    console.log(`${this.fileName} is now available`);
+                    promise.resolve(this.fileName ?? destFilename);
+                    console.log(`${this.fileName ?? destFilename} is now available`);
                 }
                 delete this.promises[this.now];
             }
@@ -40,12 +40,12 @@ class File {
         });
 
         inbox.addEventListener("newfile", (evt: Event) => {
-            console.log(JSON.stringify(evt));
-            this.getInboxFile();
-            if(this.daylight1.href != this.fileName) {
-                this.daylight1.href = this.fileName;
-                console.log(`Image set to ${this.fileName}`);
-            }
+        //     console.log(JSON.stringify(evt));
+        //     this.getInboxFile();
+        //     if(this.daylight1.href != this.fileName) {
+        //         this.daylight1.href = this.fileName;
+        //         console.log(`Image set to ${this.fileName}`);
+        //     }
         });
 
     }
@@ -63,17 +63,28 @@ class File {
 
     daylight1 = document.getElementById("daylight1") as ImageElement;
 
-    getInboxFile() {
-        var newFileName;
+    searchInbox() {
+        var inboxFileName = new String();
+        var nextFile = new String();
+        while (nextFile = inbox.nextFile()) {
+            if(nextFile.indexOf(".jpg") > 0 || nextFile.indexOf(".png") > 0 || nextFile.indexOf(".txi") > 0) {
+                inboxFileName = nextFile;
+                console.log(`Inbox: /private/data/${inboxFileName} found`);
+            }
+        }
+        return inboxFileName;
+    }
+
+    getInboxFile(receivedFileName = undefined) {
         try {
             var inboxFileName;
-            while (newFileName = inbox.nextFile()) {
-                console.log(`Inbox: /private/data/${newFileName} found`);
-                inboxFileName = newFileName;
+
+            inboxFileName = this.searchInbox();
+            if(inboxFileName && inboxFileName != "") {
+                this.fileName = `/private/data/${inboxFileName}`;
+                this.readFile();
+                console.log(`${this.fileName} received`);
             }
-            this.fileName = `/private/data/${inboxFileName}`;
-            this.readFile()
-            console.log(`${this.fileName} received`);
         }
         catch(ex) {
             console.error(ex.message);
@@ -81,33 +92,45 @@ class File {
     }
 
     getLatestFile() {
-        var files = fs.listDirSync("/private/data");
-        var oldFile;
-        var previousFile = "";
-        var currentFileName = "";
-        while((oldFile = files.next()) && !oldFile.done) {
-            if(previousFile) {
-                try {
-                    fs.unlinkSync(`/private/data/${previousFile}`);
-                    console.log(`/private/data/${previousFile} deleted`);
+        var files = fs.listDirSync("/private/data", );
+        var fileList = new Array(String);
+        var fsFile;
+
+        try {
+            while((fsFile = files.next()) && !fsFile.done) {
+                fileList.push(fsFile.value);
+            }
+            fileList.sort();
+            var fileName;
+
+            for(var f = 0; f < fileList.length;  f++) {
+
+                var newFileName = new String(fileList[f]);
+                if(newFileName.indexOf(".jpg") > 0 || newFileName.indexOf(".png") > 0 || newFileName.indexOf(".txi") > 0) {
+                    if(fileName) {
+                        try {
+                            fs.unlinkSync(`/private/data/${fileName}`);
+                            console.log(`/private/data/${fileName} deleted`);
+                        }
+                        catch (ex) { console.log(ex.message); }
+                    }
+
+                    fileName = newFileName;
+                    console.log("File is an image");
+                    if(fileName) console.log(`Folder: ${this.fileName} found`);
                 }
-                catch (ex) { console.log(ex.message); }
             }
-
-            previousFile = currentFileName;
-
-            if(oldFile.value.indexOf(".jpg") > 0 || oldFile.value.indexOf(".png") > 0) {
-                currentFileName = oldFile.value;
-                this.fileName = `/private/data/${currentFileName}`;
-            }
-            console.log(`Folder: ${this.fileName} found`);
+            this.fileName = `/private/data/${fileName}`;
+            this.readFile();
+            files = null;
+            fileList = null;
         }
-        this.readFile();
-        files = null;
+        catch(ex) { console.log(ex.message); }
     }
 
-    readFile = () => {
+    readFile(){
         try {
+            console.log("ReadFile");
             var fileContent = fs.readFileSync(this.fileName);
             if(fileContent.byteLength < 1000) this.file = fileContent;
             console.log(fileContent.byteLength);
@@ -117,7 +140,7 @@ class File {
         }
     }
 
-    writeFile = () => {
+    writeFile(){
         try {
             fs.writeFileSync(this.fileName, this.file);
         } catch (n) {
@@ -141,7 +164,7 @@ class File {
         return new Promise((resolve, reject) => {
             this.now = Date.now()
             if (this.fileName && (this.now - this.timestamp < maximumAge)) {
-                this.getLatestFile();
+                this.getInboxFile();
                 resolve(this.fileName);
             }
             else {
@@ -160,8 +183,8 @@ class File {
 
     requestFile() {
         try {
-            console.log("Request file");
             this.fileRequested = true;
+            console.log("Request file");
 
             var data = {
                 key: "getDaylightImage",
@@ -169,19 +192,23 @@ class File {
             };
             console.log(JSON.stringify(data));
 
-            this.getLatestFile();
-
             this.fetch(this.firstRun * 60 * 1000, data)
+            .then(filename => this.setFileName(filename))
             .then(() => this.firstRun = 60)
+            .then(() => this.getLatestFile())
             .catch(error => console.log(error));
 
-            if(this.daylight1.href != this.fileName) {
-                this.daylight1.href = this.fileName;
-                console.log(`Image set to ${this.fileName}`);
-            }
+            console.log("File Updated");
         }
         catch(ex) {
             console.log(ex.message);
+        }
+    }
+
+    setFileName(filename) {
+        if(this.daylight1.href != filename && this.daylight1.href < filename) {
+            this.daylight1.href = filename;
+            console.log(`Image set to ${filename}`);
         }
     }
 }

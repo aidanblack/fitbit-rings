@@ -23,6 +23,7 @@ class Clock {
     dayText = document.getElementById("dayText") as TextElement;
     dateMonth = document.getElementById("dateMonth") as GroupElement;
     monthText = document.getElementById("monthText") as TextElement;
+    smoothSecond = document.getElementById("smoothSecond") as GroupElement;
 
     constructor() {
         try {
@@ -49,22 +50,17 @@ class Clock {
         this.hourRotate.groupTransform.rotate.angle = -(((360 / 12) * hours) + ((360 / 12 / 60) * minutes));
         this.minuteRotate.groupTransform.rotate.angle = -((360 / 60) * minutes + ((360 / 60 / 60) * seconds));
         this.secondRotate.groupTransform.rotate.angle = -(seconds * 6);
-        // document.getElementById("smoothSecond").animate("enable");
+        //this.smoothSecond.animate("enable");
 
         if(minutes === 0) this.file.fileRequested = false;
-        if((this.weather.timestamp === 0 || currentTimestamp - this.weather.timestamp > (30 * 60 * 1000)) && !this.weather.weatherRunning) {
-            this.weather.weatherRunning = true;
-            this.weather.updateWeather();
+        if((this.weather.timestamp === 0 || currentTimestamp - this.weather.timestamp > (30 * 60 * 1000))) {
+            if(!this.file.fileRequested) this.file.requestFile();
+            if(!this.weather.weatherRunning) {
+                this.weather.weatherRunning = true;
+                this.weather.updateWeather();
+            }
         }
         console.log(`${this.weather.timestamp} : ${currentTimestamp}`);
-
-        if((clock.granularity === "minutes"  && (minutes + 5) % 5 === 0) || seconds === 0) {
-            if(this.file.fileRequested === false) {
-                this.file.requestFile();
-            }
-            this.updateGoals();
-            this.updateBattery();
-        }
 
         this.updateDisplay();
     }
