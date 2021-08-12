@@ -11,6 +11,14 @@ function ringsSettings(props) {
                         { name: "Farenheit" }
                     ]}
                 />
+                <Select
+                    label={`Globe Style`}
+                    settingsKey="globeStyle"
+                    options={[
+                        { name: "BlueMarble" },
+                        { name: "HeatMap" }
+                    ]}
+                />
             </Section>
         </Page>
     );

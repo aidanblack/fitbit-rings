@@ -29,6 +29,10 @@ messaging.peerSocket.addEventListener("message", (evt) => {
       weather.tempUnit = evt.data.value.selected;
       clockController.weather.updateWeather();
     }
+    if (evt.data.key === "globeStyle") {
+      clockController.file.firstRun = 1;
+      clockController.file.requestFile();
+    }
   }
 });
 

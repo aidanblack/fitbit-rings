@@ -87,8 +87,15 @@ function daylightImage(lat, lon) {
 
   console.log(`${lat} ${northSouth}, ${lon} ${eastWest}`);
 
+  var globeStyle = JSON.parse(settingsStorage.getItem("globeStyle")).selected || "0";
+  console.log(globeStyle);
+  var srcImage;
+
   //let srcImage = encodeURI(`https://www.timeanddate.com/scripts/sunmap.php?earth=0&iso=${year}${month}${day}T${hour}${minute}`);
-  let srcImage = `https%3A%2F%2Ffourmilab.ch%2Fcgi-bin%2FEarth%3Fimg%3Dwx-cmap.bmp%26imgsize%3D336%26dynimg%3Dy%26gamma%3D1.32%26opt%3D-l%26lat%3D${lat}%26ns%3D${northSouth}%26lon%3D${lon}%26ew%3D${eastWest}%26alt%3D35785%26tle%3D%26utc%3D%26date%3D0%26jd%3D%26iso%3D${year}${month}${day}${hour}`;
+  if(globeStyle == "0")
+    srcImage = `https%3A%2F%2Ffourmilab.ch%2Fcgi-bin%2FEarth%3Fimg%3DNASA500m.evif%26imgsize%3D336%26dynimg%3Dy%26gamma%3D1.32%26opt%3D-l%26lat%3D${lat}%26ns%3D${northSouth}%26lon%3D${lon}%26ew%3D${eastWest}%26alt%3D35785%26tle%3D%26utc%3D%26date%3D0%26jd%3D%26iso%3D${year}${month}${day}${hour}`;
+  else
+    srcImage = `https%3A%2F%2Ffourmilab.ch%2Fcgi-bin%2FEarth%3Fimg%3Dwx-cmap.bmp%26imgsize%3D336%26dynimg%3Dy%26gamma%3D1.32%26opt%3D-l%26lat%3D${lat}%26ns%3D${northSouth}%26lon%3D${lon}%26ew%3D${eastWest}%26alt%3D35785%26tle%3D%26utc%3D%26date%3D0%26jd%3D%26iso%3D${year}${month}${day}${hour}`;
   let resizeUri = `https://images.weserv.nl/?url=${srcImage}&w=96&h=96&output=jpg&mask=circle&mbg=0000`;//&mod=1.7&con=1.25&sat=0.9&hue=-15
   let destFilename = `daylight${month}${day}${hour}${minute}.jpg`;
 
